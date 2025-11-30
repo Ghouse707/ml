@@ -1,0 +1,44 @@
+import pandas as pd
+
+# --- Part 1: CSV Operations ---
+
+csv_file_path = r'enjoysport.csv' 
+df = pd.read_csv(csv_file_path)
+print("Imported CSV Data")
+print(df.head()) 
+
+# Creating a new column 'NewValue' from 'humidity'
+df['NewValue'] = df['Humidity']
+print("\nProcessed Data")
+print(df.head())
+
+# Exporting the modified DataFrame to a new CSV
+df.to_csv('exported_data.csv', index=False)
+print("\nData exported to 'exported_data.csv'")
+
+# Reading the exported CSV back to verify
+df1 = pd.read_csv('exported_data.csv')
+print(df1.head())
+
+
+# --- Part 2: Excel Operations (Importing and Exporting) ---
+
+excel_file_path = r'Untitled spreadsheet.xlsx generate content.xlsx'
+df = pd.read_excel(excel_file_path)
+print("Imported Excel Data")
+print(df.head())
+
+# Calculating Row Totals
+# Note: This assumes the Excel data contains numerical values. 
+# If mixed types exist, you might need: df.sum(axis=1, numeric_only=True)
+df['Total'] = df.sum(axis=1)
+print("\nData with Rows Totals:")
+print(df)
+
+# Exporting the modified DataFrame to a new Excel file
+df.to_excel('modified_data.xlsx', index=False)
+print("\nData exported to 'modified_data.xlsx'")
+
+# Reading the original Excel file again (as per the code in the image)
+df = pd.read_excel(excel_file_path)
+print(df.head())
