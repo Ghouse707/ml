@@ -1,0 +1,18 @@
+import csv
+print("\nThe most general hypothesis: ['?', '?', '?', '?', '?', '?']\n")
+print("\nThe most specific hypothesis: ['0', '0', '0', '0', '0', '0']\n")
+
+a = []
+
+with open('enjoysport1.csv', 'r') as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        a.append(row)
+        print(row)
+
+print("\nInitial value of hypothesis:")
+
+num_attributes = len(a[0]) - 1       
+
+hypothesis = ['0'] * num_attributes
+print(hypothesis)
