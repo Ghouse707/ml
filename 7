@@ -1,0 +1,50 @@
+import numpy as np
+import pandas as pd
+from pgmpy.models import BayesianModel      # ✓ correct
+from pgmpy.estimators import MaximumLikelihoodEstimator
+from pgmpy.inference import VariableElimination
+
+# 1. Load and Process Data
+HeartDisease = pd.read_csv("heart.csv")
+
+# Replace missing values '?' with NaN
+HeartDisease = HeartDisease.replace('?', np.nan)
+
+# Drop rows with any missing values
+HeartDisease = HeartDisease.dropna()
+
+# Convert all columns to int (required for discrete Bayesian networks)
+HeartDisease = HeartDisease.astype(int)
+
+print("Sample instances from the dataset are given below:")
+print(HeartDisease.head())
+
+print("\nAttributes and datatypes")
+print(HeartDisease.dtypes)
+
+# 2. Define the Bayesian Network Model (same as lab)
+model = BayesianModel([
+    ('age', 'heartdisease'),
+    ('sex', 'heartdisease'),
+    ('exang', 'heartdisease'),
+    ('cp', 'heartdisease'),
+    ('heartdisease', 'restecg'),
+    ('heartdisease', 'chol')
+])
+
+# 3. Train the Model using Maximum 
+model.fit(HeartDisease, estimator=MaximumLikelihoodEstimator)
+
+# 4. Inference
+print('\nInferencing with Bayesian Network:')
+infer = VariableElimination(model)
+
+# Query 1: P(heartdisease | restecg = 1)
+print('\n1. Probability of heartdisease given evidence = restecg')
+q1 = infer.query(variables=['heartdisease'], evidence={'restecg': 1})
+print(q1)
+
+# Query 2: P(heartdisease | cp = 2)
+print('\n2. Probability of heartdisease given evidence = cp')
+q2 = infer.query(variables=['heartdisease'], evidence={'cp': 2})
+print(q2)
