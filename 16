@@ -1,0 +1,39 @@
+# Import libraries
+import pandas as pd
+from kmodes.kmodes import KModes
+
+# Create dataset
+data = {
+    'Color': ['Red', 'Blue', 'Green', 'Green', 'Blue', 'Red', 'Red', 'Green'],
+
+    'Shape': ['Circle', 'Square', 'Circle', 'Square', 'Circle', 'Circle', 'Square', 'Square'],
+
+    'Size': ['Small', 'Large', 'Large', 'Small', 'Small', 'Large', 'Small', 'Large']
+}
+
+# Convert to DataFrame
+df = pd.DataFrame(data)
+
+# Display the original dataset
+print("Original Dataset:")
+print(df)
+
+# Create K-Modes model
+model = KModes(n_clusters=2, init='Huang', n_init=10, verbose=0)
+
+# Fit the model to the categorical data
+model.fit(df)
+
+cluster_labels = model.labels_
+
+print("\nCluster Labels:")
+print(cluster_labels)
+
+print("\nCluster Centroids (Modes):")
+print(model.cluster_centroids_)
+
+# Add cluster labels to dataset
+df['Cluster'] = cluster_labels
+
+print("\nDataset with Cluster Assignments:")
+print(df) 
